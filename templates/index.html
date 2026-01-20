@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI OCT Disease Analyzer | Premium Medical AI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Background Particles -->
+    <div id="particles"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>OCT<span style="color: var(--primary);">.AI</span></h1>
+            <p class="subtitle">Next-Generation Retinal Disease Diagnostics</p>
+        </header>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-number" id="accuracy">94%</div>
+                <div class="stat-label">Model Accuracy</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1.2s</div>
+                <div class="stat-label">Inference Time</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Diseases Detected</div>
+            </div>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+            <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="uploadImage()">
+            <div class="upload-icon">🧬</div>
+            <div class="upload-text">Upload OCT Scan</div>
+            <p class="upload-subtext">Drag & drop or click to analyze retinal imagery</p>
+            <button class="upload-btn">Initialize Analysis</button>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading" id="loading">
+            <div class="scan-line"></div>
+            <div class="loading-text">PROCESSING NEURAL NETWORK LAYERS...</div>
+        </div>
+
+        <!-- Results Dashboard -->
+        <div class="results" id="results">
+            <div class="dashboard-grid">
+                
+                <!-- Main Prediction Panel -->
+                <div class="panel panel-main">
+                    <div>
+                        <div class="prediction-label">DIAGNOSIS</div>
+                        <h2 id="predictionClass" style="font-size: 4rem; color: white; margin-bottom: 20px;">NORMAL</h2>
+                        <div id="confidenceWrapper">
+                            <span style="color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px;">Confidence Level</span>
+                            <div class="confidence-big" id="confidenceValue">98.5%</div>
+                        </div>
+                    </div>
+                    <!-- Dynamic Donut Chart can go here via JS or simple CSS circle -->
+                     <div style="position: relative; width: 200px; height: 200px;">
+                        <svg viewBox="0 0 100 100" style="transform: rotate(-90deg);">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
+                            <circle id="mainConfidenceCircle" cx="50" cy="50" r="45" fill="none" stroke="var(--primary)" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="0" stroke-linecap="round"/>
+                        </svg>
+                     </div>
+                </div>
+
+                <!-- Image Analysis Panel -->
+                <div class="panel panel-images">
+                    <div class="panel-title">Scanned Imagery</div>
+                    <img id="originalImg" class="img-preview" src="" alt="Original Scan">
+                    <img id="heatmapImg" class="img-preview" src="" alt="Attention Heatmap" style="margin-top: auto;">
+                </div>
+
+                <!-- Severity & Urgency Banner -->
+                <div id="severityBanner" class="severity-banner">
+                    <div>
+                        <div class="severity-title" id="severityTitle">SEVERITY: MODERATE</div>
+                        <div class="severity-desc" id="severityDesc">Immediate consultation recommended.</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 0.9rem; text-transform: uppercase; opacity: 0.7;">Risk Score</div>
+                        <div style="font-size: 2rem; font-weight: 700;" id="riskScore">65/100</div>
+                    </div>
+                </div>
+
+                <!-- GLCM Features Panel -->
+                <div class="panel" style="grid-column: span 6;">
+                    <div class="panel-title">Texture Analysis (GLCM)</div>
+                    <div id="glcmControls">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Probabilities Panel -->
+                <div class="panel" style="grid-column: span 6;">
+                    <div class="panel-title">Differential Diagnosis</div>
+                    <div id="probList">
+                         <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Medical Insights Grid -->
+                <!-- Symptoms -->
+                <div class="insight-card" style="grid-column: span 3;">
+                    <h3>⚠️ Symptoms</h3>
+                    <ul id="symptomsList"></ul>
+                </div>
+                <!-- Causes -->
+                <div class="insight-card" style="grid-column: span 3;">
+                    <h3>🔍 Causes</h3>
+                    <ul id="causesList"></ul>
+                </div>
+                <!-- Treatment -->
+                <div class="insight-card" style="grid-column: span 3;">
+                    <h3>💊 Treatment</h3>
+                    <ul id="treatmentList"></ul>
+                </div>
+                <!-- Lifestyle -->
+                <div class="insight-card" style="grid-column: span 3;">
+                    <h3>🛡️ Lifestyle</h3>
+                    <ul id="lifestyleList"></ul>
+                </div>
+
+                <!-- Disclaimer -->
+                <div style="grid-column: span 12; text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-top: 40px; padding: 20px; border-top: 1px solid var(--glass-border);">
+                    MEDICAL DISCLAIMER: This tool uses artificial intelligence for educational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment.
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

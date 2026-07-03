@@ -41,7 +41,6 @@ api.upload_folder(
     ignore_patterns=[
         "venv/*",
         ".git/*",
-        ".claude/*",
         "__pycache__/*",
         "*/__pycache__/*",
         "*.pyc",

@@ -28,10 +28,9 @@ dataset/
 static/uploads/*
 !static/uploads/.gitkeep
 
-# IDE / editor & tooling config
+# IDE / editor config
 .vscode/
 .idea/
-.claude/
 *.swp
 *.swo
 

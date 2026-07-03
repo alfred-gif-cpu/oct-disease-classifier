@@ -1,3 +1,13 @@
+---
+title: OCT Disease Classifier
+emoji: 🔬
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # 🔬 AI OCT Disease Classifier
 
 AI-powered retinal disease detection system using hybrid deep learning architecture for automated diagnosis of OCT scans.

@@ -11,14 +11,7 @@ env/
 ENV/
 virtualenv/
 
-# TensorFlow models (too large)
-*.h5
-*.hdf5
-
-# Model files
-models/*.h5
-models/*.pkl
-models/*.joblib
+# Trained model files are included in this repo (see models/)
 
 # Dataset (too large)
 data/
@@ -35,9 +28,10 @@ dataset/
 static/uploads/*
 !static/uploads/.gitkeep
 
-# IDE
+# IDE / editor & tooling config
 .vscode/
 .idea/
+.claude/
 *.swp
 *.swo
 

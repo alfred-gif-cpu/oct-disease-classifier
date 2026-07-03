@@ -3,8 +3,26 @@
 OCT Disease Classifier - Complete Web Application with Dynamic Severity Assessment
 """
 
+import sys
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
+    sys.stderr.reconfigure(encoding='utf-8')
+
 from flask import Flask, render_template, request, jsonify
 import numpy as np
+
+# Compatibility shim: the .pkl scalers were pickled under NumPy 2.x (which
+# moved numpy.core -> numpy._core). This environment pins NumPy < 2 for
+# TensorFlow ABI compatibility, so alias the old layout back in.
+if not hasattr(np, '_core'):
+    import sys as _sys
+    _sys.modules['numpy._core'] = np.core
+    for _name in ('multiarray', '_multiarray_umath', 'numeric', 'numerictypes',
+                  'umath', 'fromnumeric', '_exceptions', '_methods', 'overrides'):
+        _submod = getattr(np.core, _name, None)
+        if _submod is not None:
+            _sys.modules[f'numpy._core.{_name}'] = _submod
+
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array, load_img
